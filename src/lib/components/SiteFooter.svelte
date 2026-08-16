@@ -22,7 +22,7 @@
 		<div
 			class="mt-16 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6 text-[0.7rem] tracking-wide text-ink-soft"
 		>
-			<a href={resolve('/')} class="font-display text-xl">
+			<a href={resolve('/')} class="font-display text-white transition-opacity duration-300 hover:opacity-70 text-xl">
 				Veeloo<span class="text-accent">Investments.</span>
 			</a>
 			<nav class="flex flex-wrap items-center gap-5 font-mono uppercase">

@@ -2,8 +2,7 @@
 
 /*
  * Veeloo design tokens - editorial minimalism.
- * Monochrome paper/ink base with a single restrained accent.
- * Same token names, values swap per theme.
+ * Monochrome ink/paper base with a single restrained accent. Dark-only.
  */
 @theme {
 	--font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -11,18 +10,6 @@
 	--font-accent: 'Instrument Serif', ui-serif, Georgia, serif;
 	--font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, ui-monospace, Menlo, monospace;
 
-	--color-bg: #f7f6f2;
-	--color-bg-alt: #efece3;
-	--color-surface: #ffffff;
-	--color-ink: #141311;
-	--color-ink-soft: #6f6a61;
-	--color-line: color-mix(in srgb, var(--color-ink) 13%, transparent);
-	--color-line-strong: color-mix(in srgb, var(--color-ink) 26%, transparent);
-	--color-accent: #b1502c;
-	--color-accent-soft: color-mix(in srgb, var(--color-accent) 14%, transparent);
-}
-
-:root[data-theme='dark'] {
 	--color-bg: #0e0e0d;
 	--color-bg-alt: #171613;
 	--color-surface: #1a1917;
@@ -34,23 +21,9 @@
 	--color-accent-soft: color-mix(in srgb, var(--color-accent) 18%, transparent);
 }
 
-@media (prefers-color-scheme: dark) {
-	:root:not([data-theme='light']) {
-		--color-bg: #0e0e0d;
-		--color-bg-alt: #171613;
-		--color-surface: #1a1917;
-		--color-ink: #f3f1ea;
-		--color-ink-soft: #a8a297;
-		--color-line: color-mix(in srgb, var(--color-ink) 14%, transparent);
-		--color-line-strong: color-mix(in srgb, var(--color-ink) 28%, transparent);
-		--color-accent: #dfb705;
-		--color-accent-soft: color-mix(in srgb, var(--color-accent) 18%, transparent);
-	}
-}
-
 html {
 	background: var(--color-bg);
-	color-scheme: light dark;
+	color-scheme: dark;
 }
 
 body {

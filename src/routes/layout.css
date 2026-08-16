@@ -1,0 +1,286 @@
+@import 'tailwindcss';
+
+/*
+ * Veeloo design tokens - editorial minimalism.
+ * Monochrome paper/ink base with a single restrained accent.
+ * Same token names, values swap per theme.
+ */
+@theme {
+	--font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+	--font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, Helvetica, Arial, sans-serif;
+	--font-accent: 'Instrument Serif', ui-serif, Georgia, serif;
+	--font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, ui-monospace, Menlo, monospace;
+
+	--color-bg: #f7f6f2;
+	--color-bg-alt: #efece3;
+	--color-surface: #ffffff;
+	--color-ink: #141311;
+	--color-ink-soft: #6f6a61;
+	--color-line: color-mix(in srgb, var(--color-ink) 13%, transparent);
+	--color-line-strong: color-mix(in srgb, var(--color-ink) 26%, transparent);
+	--color-accent: #b1502c;
+	--color-accent-soft: color-mix(in srgb, var(--color-accent) 14%, transparent);
+}
+
+:root[data-theme='dark'] {
+	--color-bg: #0e0e0d;
+	--color-bg-alt: #171613;
+	--color-surface: #1a1917;
+	--color-ink: #f3f1ea;
+	--color-ink-soft: #a8a297;
+	--color-line: color-mix(in srgb, var(--color-ink) 14%, transparent);
+	--color-line-strong: color-mix(in srgb, var(--color-ink) 28%, transparent);
+	--color-accent: #dfb705;
+	--color-accent-soft: color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) {
+		--color-bg: #0e0e0d;
+		--color-bg-alt: #171613;
+		--color-surface: #1a1917;
+		--color-ink: #f3f1ea;
+		--color-ink-soft: #a8a297;
+		--color-line: color-mix(in srgb, var(--color-ink) 14%, transparent);
+		--color-line-strong: color-mix(in srgb, var(--color-ink) 28%, transparent);
+		--color-accent: #dfb705;
+		--color-accent-soft: color-mix(in srgb, var(--color-accent) 18%, transparent);
+	}
+}
+
+html {
+	background: var(--color-bg);
+	color-scheme: light dark;
+}
+
+body {
+	position: relative;
+	background: var(--color-bg);
+	color: var(--color-ink);
+	font-family: var(--font-sans);
+	-webkit-font-smoothing: antialiased;
+}
+
+/* Global safety net - every transition/animation on the site collapses to near-instant. */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.001ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.001ms !important;
+		transition-delay: 0ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+::selection {
+	background: var(--color-accent);
+	color: var(--color-bg);
+}
+
+.font-display {
+	font-family: var(--font-display);
+	letter-spacing: -0.03em;
+	font-weight: 600;
+}
+
+.font-accent {
+	font-family: var(--font-accent);
+	font-style: italic;
+	font-weight: 400;
+	letter-spacing: 0;
+}
+
+.font-mono {
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.02em;
+}
+
+/* Scroll-reveal: paired with the `reveal` action in $lib/actions/reveal.ts.
+   Set `style="--reveal-delay: 80ms"` on an element to stagger it within a group. */
+.reveal {
+	opacity: 0;
+	transform: translateY(18px);
+	transition:
+		opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+		transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+	transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+	.reveal {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+}
+
+/* Left-to-right typewriter reveal, paired with the `typeReveal` action in
+   $lib/actions/typeReveal.ts. The container starts hidden (matching `.reveal`'s
+   convention) so there's no flash of plain text before the characters are wrapped;
+   each `.type-char` then fades/sharpens in on its own staggered delay. */
+.type-reveal {
+	opacity: 0;
+}
+.type-reveal.is-visible {
+	opacity: 1;
+}
+.type-reveal .type-char {
+	opacity: 0;
+	filter: blur(3px);
+	transition:
+		opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+		filter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+	transition-delay: var(--type-delay, 0ms);
+}
+.type-reveal.is-visible .type-char {
+	opacity: 1;
+	filter: blur(0);
+}
+@media (prefers-reduced-motion: reduce) {
+	.type-reveal {
+		opacity: 1;
+	}
+	.type-reveal .type-char {
+		opacity: 1;
+		filter: none;
+		transition: none;
+	}
+}
+
+/* Slim top-of-viewport bar shown while a client-side navigation is in flight. */
+.nav-progress {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 60;
+	height: 2px;
+	width: 100%;
+	background: var(--color-accent);
+	transform: scaleX(0);
+	transform-origin: left;
+	animation: nav-progress-grow 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes nav-progress-grow {
+	0% {
+		transform: scaleX(0);
+	}
+	60% {
+		transform: scaleX(0.7);
+	}
+	100% {
+		transform: scaleX(0.92);
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.nav-progress {
+		animation: none;
+		transform: scaleX(0.92);
+	}
+}
+
+/* Cross-page transitions via the View Transitions API, wired up in +layout.svelte. */
+@media (prefers-reduced-motion: no-preference) {
+	::view-transition-old(root) {
+		animation: veeloo-view-out 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+	}
+	::view-transition-new(root) {
+		animation: veeloo-view-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+	}
+}
+@keyframes veeloo-view-out {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+}
+@keyframes veeloo-view-in {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Hides scrollbars on horizontal drag-scroll carousels while keeping native touch/drag scroll. */
+.no-scrollbar {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
+/* Paired with the `dragScroll` action - grab cursor at rest, grabbing while actively dragging. */
+.drag-scroll {
+	cursor: grab;
+}
+.drag-scroll.dragging {
+	cursor: grabbing;
+	user-select: none;
+}
+.drag-scroll img {
+	-webkit-user-drag: none;
+}
+
+/* Auto-scrolling chassis-code ticker. Track content is duplicated in markup for a seamless loop. */
+.marquee-track {
+	display: flex;
+	width: max-content;
+	animation: marquee 32s linear infinite;
+}
+.marquee-track:hover {
+	animation-play-state: paused;
+}
+@keyframes marquee {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-50%);
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.marquee-track {
+		animation: none;
+	}
+}
+
+/* Subtle press/lift feedback for the site's pill CTAs (`rounded-full bg-ink` buttons). */
+.btn-pill {
+	transition:
+		transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+		opacity 0.25s ease;
+}
+.btn-pill:hover {
+	opacity: 0.88;
+	transform: scale(1.03);
+}
+.btn-pill:active {
+	transform: scale(0.97);
+	opacity: 1;
+}
+
+/* Underline that grows from the left on hover - used for inline text links. */
+.link-underline {
+	position: relative;
+	background-image: linear-gradient(currentColor, currentColor);
+	background-size: 0% 1px;
+	background-position: 0 100%;
+	background-repeat: no-repeat;
+	transition: background-size 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.link-underline:hover {
+	background-size: 100% 1px;
+}

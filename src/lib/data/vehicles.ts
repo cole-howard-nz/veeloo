@@ -1,9 +1,9 @@
 import type { Vehicle } from '$lib/types';
 
 /**
- * Temp/placeholder stock - pulled from the client's live inventory
- * (dealership.promptly.nz/inventory) as realistic sample data for this build.
- * Swap for the real feed once that's wired up.
+ * Fallback/seed stock, used by $lib/server/vehicles when Edge Config isn't configured
+ * (local dev) or unreachable. The admin CMS at /admin is the source of truth in production -
+ * see $lib/server/vehicles.ts for the read/write layer that backs it.
  */
 export const vehicles: Vehicle[] = [
 	{
@@ -325,20 +325,20 @@ export const vehicles: Vehicle[] = [
 	}
 ];
 
-export function getVehicleBySlug(slug: string): Vehicle | undefined {
+export function getVehicleBySlug(vehicles: Vehicle[], slug: string): Vehicle | undefined {
 	return vehicles.find((v) => v.slug === slug);
 }
 
-export function getAvailableVehicles(): Vehicle[] {
+export function getAvailableVehicles(vehicles: Vehicle[]): Vehicle[] {
 	return vehicles.filter((v) => v.status !== 'sold');
 }
 
-export function getSoldVehicles(): Vehicle[] {
+export function getSoldVehicles(vehicles: Vehicle[]): Vehicle[] {
 	return vehicles
 		.filter((v) => v.status === 'sold')
 		.sort((a, b) => (b.soldDate ?? '').localeCompare(a.soldDate ?? ''));
 }
 
-export function getJustLanded(): Vehicle[] {
+export function getJustLanded(vehicles: Vehicle[]): Vehicle[] {
 	return vehicles.filter((v) => v.justLanded);
 }

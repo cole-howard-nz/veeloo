@@ -127,7 +127,7 @@
 				use:typeReveal={{ stepMs: 14 }}
 				class="type-reveal max-w-2xl font-display text-3xl leading-tight sm:text-4xl"
 			>
-				We source one chassis from owners we've actually spoken to, then we hand it to you the same
+				We source chassis from owners we've actually spoken to, then we hand it to you the same
 				way. A
 				<span class="font-accent text-accent">conversation,</span> not a checkout button.
 			</p>

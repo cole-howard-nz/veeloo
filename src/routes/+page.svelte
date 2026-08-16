@@ -5,20 +5,15 @@
 	import { dragScroll } from '$lib/actions/dragScroll';
 	import VehicleCard from '$lib/components/VehicleCard.svelte';
 	import FadeImage from '$lib/components/FadeImage.svelte';
-	import {
-		getAvailableVehicles,
-		getJustLanded,
-		getSoldVehicles,
-		vehicles
-	} from '$lib/data/vehicles';
+	import { getAvailableVehicles, getJustLanded, getSoldVehicles } from '$lib/data/vehicles';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
-	const justLanded = getJustLanded();
-	const teaserStock = getAvailableVehicles().slice(0, 8);
-	const soldTeaser = getSoldVehicles().slice(0, 3);
-	const carousel = justLanded.length > 0 ? justLanded : teaserStock.slice(0, 4);
+	const justLanded = $derived(getJustLanded(data.vehicles));
+	const teaserStock = $derived(getAvailableVehicles(data.vehicles).slice(0, 8));
+	const soldTeaser = $derived(getSoldVehicles(data.vehicles).slice(0, 3));
+	const carousel = $derived(justLanded.length > 0 ? justLanded : teaserStock.slice(0, 4));
 	const feedTiles = Array.from({ length: 6 }, (_, i) => i);
 </script>
 
@@ -45,7 +40,7 @@
 		</p>
 		<div class="flex items-center gap-10">
 			<div class="font-mono text-xs text-ink-soft uppercase">
-				<span class="block font-display text-3xl text-ink">{vehicles.length}+</span>
+				<span class="block font-display text-3xl text-ink">{data.vehicles.length}+</span>
 				Vehicles
 			</div>
 			<div class="font-mono text-xs text-ink-soft uppercase">

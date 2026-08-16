@@ -2,8 +2,11 @@
 	import { reveal } from '$lib/actions/reveal';
 	import VehicleCard from '$lib/components/VehicleCard.svelte';
 	import { getSoldVehicles } from '$lib/data/vehicles';
+	import type { PageData } from './$types';
 
-	const sold = getSoldVehicles();
+	let { data }: { data: PageData } = $props();
+
+	const sold = $derived(getSoldVehicles(data.vehicles));
 </script>
 
 <svelte:head>

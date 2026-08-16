@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { reveal } from '$lib/actions/reveal';
-	import { vehicles, getSoldVehicles } from '$lib/data/vehicles';
+	import { getSoldVehicles } from '$lib/data/vehicles';
+	import type { PageData } from './$types';
 
-	const soldCount = getSoldVehicles().length;
+	let { data }: { data: PageData } = $props();
+
+	const soldCount = $derived(getSoldVehicles(data.vehicles).length);
 
 	const steps = [
 		{
@@ -50,7 +53,7 @@
 <section class="border-y border-line bg-bg-alt">
 	<div use:reveal class="reveal mx-auto grid max-w-6xl grid-cols-2 gap-8 px-6 py-14 sm:grid-cols-4">
 		<div>
-			<span class="block font-display text-4xl text-ink">{vehicles.length}+</span>
+			<span class="block font-display text-4xl text-ink">{data.vehicles.length}+</span>
 			<span class="font-mono text-xs text-ink-soft uppercase">Cars sourced</span>
 		</div>
 		<div>

@@ -1,14 +1,25 @@
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import { page } from '$app/state';
 	import { reveal } from '$lib/actions/reveal';
 	import { typeReveal } from '$lib/actions/typeReveal';
 	import { getVehicleBySlug } from '$lib/data/vehicles';
+	import type { PageData } from './$types';
+
+	let { data }: { data: PageData } = $props();
 
 	type EnquiryType = 'vehicle' | 'wanted' | 'finance' | 'trade-in';
 
+	// Seeded once from the URL at mount, same as the rest of this form's initial state - not
+	// meant to react to later navigation within the same component instance.
 	const refSlug = page.url.searchParams.get('ref');
 	const typeParam = page.url.searchParams.get('type');
-	const refVehicle = refSlug ? getVehicleBySlug(refSlug) : undefined;
+	const refVehicle = refSlug
+		? getVehicleBySlug(
+				untrack(() => data.vehicles),
+				refSlug
+			)
+		: undefined;
 
 	const typeOptions: { value: EnquiryType; label: string }[] = [
 		{ value: 'wanted', label: "Something specific I'm hunting" },

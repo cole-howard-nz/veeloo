@@ -6,7 +6,6 @@
 	import StatusTag from '$lib/components/StatusTag.svelte';
 	import VehicleCard from '$lib/components/VehicleCard.svelte';
 	import FadeImage from '$lib/components/FadeImage.svelte';
-	import { vehicles } from '$lib/data/vehicles';
 
 	let { data }: { data: PageData } = $props();
 	const vehicle = $derived(data.vehicle);
@@ -17,7 +16,7 @@
 	});
 
 	const related = $derived(
-		vehicles
+		data.vehicles
 			.filter(
 				(v) => v.slug !== vehicle.slug && v.status !== 'sold' && v.drivetrain === vehicle.drivetrain
 			)

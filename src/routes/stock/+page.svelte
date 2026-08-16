@@ -4,8 +4,11 @@
 	import { reveal } from '$lib/actions/reveal';
 	import VehicleCard from '$lib/components/VehicleCard.svelte';
 	import { getAvailableVehicles } from '$lib/data/vehicles';
+	import type { PageData } from './$types';
 
-	const allStock = getAvailableVehicles();
+	let { data }: { data: PageData } = $props();
+
+	const allStock = $derived(getAvailableVehicles(data.vehicles));
 
 	type Era = 'all' | '80s' | '90s' | '00s';
 	type Drivetrain = 'all' | 'RWD' | 'AWD' | 'FWD';
